@@ -7,11 +7,16 @@ function upload() {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        fetch('ypload_file', {
+        fetch('http://localhost:5000/upload_file', {
             method: 'POST',
             body: formData,
         })
-        .then((res) => res.json())
+        .then((res) => {
+            if (!res.ok) {
+                return res.text().then(text => { throw new Error(text) });
+            }
+            return res.json();
+        })
         .then((data)=> {
             console.log(data);
         })
